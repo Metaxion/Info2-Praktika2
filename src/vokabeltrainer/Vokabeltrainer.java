@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 import Exception.KeinSemicolonException;
 import Exception.LeereVokabelException;
@@ -15,10 +16,33 @@ public class Vokabeltrainer {
 	public void start(String dateiName) {
 		vokabelDateiEinlesen(dateiName);
 		vokabelnAusgeben();
-		
-		//int laeuft = 1;
-		//while(laeuft == 1) {
-		//}
+		System.out.println("-- Vokabeltrainer --\n\n");
+		int laeuft = 1;
+		while(laeuft == 1) {
+			System.out.println("- Hauptmenue -\nEingabemoeglichkeiten:\neinlesen\nspeichern\nhinzufuegen\nloeschen\nabfragen");
+			Scanner eingabeScanner = new Scanner(System.in);
+			String eingabe = eingabeScanner.nextLine();
+			switch(eingabe) {
+				case "einlesen":
+					//TODO: umbauen
+					break;
+				case "speichern":
+					//TODO: implementieren
+					break;
+				case "hinzufuegen":
+					//TODO: implementieren
+					break;
+				case "loeschen":
+					//TODO: implementieren
+					break;
+				case "abfragen":
+					//TODO: implementieren
+					break;
+				default:
+					System.out.println("Eingabe ist ungueltig, bitte wiederholen. \n\n");
+					break;
+			}
+		}
 	}
 
 	private void vokabelnAusgeben() {

@@ -1,5 +1,6 @@
-haus;house
- geld;money
-rot ; red
-  baum ;  tree  
- studieren; to study  
+red;rot
+money;geld
+tree;baum
+to study;studieren
+house;haus
+blue;blau

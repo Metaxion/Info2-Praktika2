@@ -2,15 +2,23 @@ package vokabeltrainer;
 
 public class DoppeltverketteListe {
 
-	private String vokabelDeutsch;
 	private String vokabelEnglisch;
+	private String vokabelDeutsch;
 	private DoppeltverketteListe prev, next;
 	
-	public DoppeltverketteListe(String vokabelDeutsch, String vokabelEnglisch) {
-        this.vokabelDeutsch = vokabelDeutsch;
+	public DoppeltverketteListe(String vokabelEnglisch, String vokabelDeutsch) {
         this.vokabelEnglisch = vokabelEnglisch;
+        this.vokabelDeutsch = vokabelDeutsch;
         next = null;
     }
+	
+	public boolean hasNext() {
+		if(next != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 	public String getVokabelDeutsch() {
 		return vokabelDeutsch;

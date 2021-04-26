@@ -1,6 +1,8 @@
 red;rot
 money;geld
-tree;baum
 to study;studieren
 house;haus
 blue;blau
+dog;hund
+yellow;gelb
+tree;baum

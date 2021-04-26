@@ -62,21 +62,29 @@ public class Vokabeltrainer {
 			case "hinzufuegen":
 				if (listenVerwaltung.getAnfang() != null) {
 					vokabelHinzufuegen();
+				} else {
+					System.out.println("Lesen sie zuvor die VokabelDatei ein!");
 				}
 				break;
 			case "loeschen":
 				if (listenVerwaltung.getAnfang() != null) {
 					vokabelLoeschen();
+				} else {
+					System.out.println("Lesen sie zuvor die VokabelDatei ein!");
 				}
 				break;
 			case "abfragen":
 				if (listenVerwaltung.getAnfang() != null) {
 					vokabelAbfragen();
+				} else {
+					System.out.println("Lesen sie zuvor die VokabelDatei ein!");
 				}
 				break;
 			case "debug":
 				if (listenVerwaltung.getAnfang() != null) {
 					vokabelnAusgeben();
+				} else {
+					System.out.println("Lesen sie zuvor die VokabelDatei ein!");
 				}
 				break;
 			case "beenden":
@@ -182,7 +190,7 @@ public class Vokabeltrainer {
 		} catch (KeinSemicolonException e) {
 			e.printStackTrace();
 		} catch (LeereVokabelException e) {
-			System.out.println("Die Eingabe Vokenthaelt keine Vokabel");
+			System.out.println("Die Eingabe enthaelt keine Vokabel");
 		}
 	}
 
@@ -195,20 +203,24 @@ public class Vokabeltrainer {
 	 */
 	protected void vokabelDateiSpeichern(String dateiName) throws IOException {
 		if (listenVerwaltung.getAnfang() != null) {
-
+			int counter = 0;
 			File datei = new File(dateiName);
 			BufferedWriter writer = new BufferedWriter(new FileWriter(datei));
 
 			DoppeltverketteteListe liste = listenVerwaltung.getAnfang();
 			if (liste != null) {
 				writer.append(liste.getVokabelEnglisch() + ";" + liste.getVokabelDeutsch());
+				counter++;
 			}
 			while (liste.hasNext()) {
 				writer.append("\n");
 				liste = liste.getNext();
 				writer.append(liste.getVokabelEnglisch() + ";" + liste.getVokabelDeutsch());
+				counter++;
 			}
 			writer.close();
+			
+			System.out.println("\n" + counter + " Vokabeln wurden erfolgreich gespeichert!");
 		}
 	}
 

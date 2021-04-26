@@ -14,7 +14,7 @@ import Exception.LeereVokabelException;
 
 public class Vokabeltrainer {
 
-	private ListenVerwaltung listenVerwaltung = new ListenVerwaltung();
+	protected ListenVerwaltung listenVerwaltung = new ListenVerwaltung();
 
 	/**
 	 * Hauptprogramm des Vokabeltrainers <br>
@@ -31,6 +31,7 @@ public class Vokabeltrainer {
 	 * - beenden <br>
 	 * (- debug) <br>
 	 * TODO Tests schreiben
+	 * 
 	 * @param dateiName
 	 */
 	public void start(String dateiName) {
@@ -92,14 +93,15 @@ public class Vokabeltrainer {
 	/**
 	 * Fragt eine zufaellige Vokabel in einer zufaelligen Uebersetzungsrichtung ab.
 	 */
-	private void vokabelAbfragen() {
+	@SuppressWarnings("resource")
+	protected void vokabelAbfragen() {
 		Scanner vokabelScanner = new Scanner(System.in);
 		String eingabe;
 		Random rand = new Random();
 		// Zufaellige Vokabel und Uebersetzungsrichtung bestimmen
 		int vokabelWahl = rand.nextInt(1000);
 		int uebersetzungsRichtung = rand.nextInt(1);
-		DoppeltverketteListe liste = listenVerwaltung.getAnfang();
+		DoppeltverketteteListe liste = listenVerwaltung.getAnfang();
 		for (int i = 0; i < vokabelWahl; i++) {
 			if (liste.hasNext()) {
 				liste = liste.getNext();
@@ -131,15 +133,16 @@ public class Vokabeltrainer {
 
 	/**
 	 * Laesst den Nutzer eine Vokabel auf deutsch oder englisch angeben und falls
-	 * sie vorhanden ist wird sie geloescht.
-	 * TODO: ueberpruefen aufgrund der Klammerverschiebung
+	 * sie vorhanden ist wird sie geloescht. TODO: ueberpruefen aufgrund der
+	 * Klammerverschiebung
 	 */
-	private void vokabelLoeschen() {
+	@SuppressWarnings("resource")
+	protected void vokabelLoeschen() {
 		Scanner vokabelScanner = new Scanner(System.in);
 		System.out.println("\nGeben sie die zu loeschende Variabel in deutsch oder englisch an:");
 		String eingabe = vokabelScanner.nextLine();
 		eingabe = eingabe.trim();
-		DoppeltverketteListe liste = listenVerwaltung.getAnfang();
+		DoppeltverketteteListe liste = listenVerwaltung.getAnfang();
 		if (liste != null) {
 			if (liste.getVokabelDeutsch().equals(eingabe) || liste.getVokabelEnglisch().equals(eingabe)) {
 				listenVerwaltung.loescheElement(liste);
@@ -158,55 +161,90 @@ public class Vokabeltrainer {
 	/**
 	 * Fordert die Eingabe einer Vokabel und speichert sie in der Liste.
 	 */
-	private void vokabelHinzufuegen() {
+	@SuppressWarnings("resource")
+	protected void vokabelHinzufuegen() {
 		Scanner vokabelScanner = new Scanner(System.in);
 		System.out.println("Geben sie die englisch Vokabel ein:");
 		String eingabeEnglisch = vokabelScanner.nextLine();
 		System.out.println("\nGeben sie die deutsche Vokabel ein:");
 		String eingabeDeutsch = vokabelScanner.nextLine();
 
-		listenVerwaltung.neuesElementAnhaengen(eingabeEnglisch.trim() + ";" + eingabeDeutsch.trim());
-		System.out.println("\nVokabel hinzugefuegt");
+		try {
+			if(validiereZeile(eingabeEnglisch + ";" + eingabeDeutsch)) {
+				
+			if(listenVerwaltung.getAnfang() != null) {
+				listenVerwaltung.neuesElementAnhaengen(eingabeEnglisch + ";" + eingabeDeutsch);
+			} else {
+				listenVerwaltung.erstesElementAnhaengen(eingabeEnglisch + ";" + eingabeDeutsch);
+			}
+			System.out.println("\nVokabel hinzugefuegt");
+			}
+		} catch (KeinSemicolonException e) {
+			e.printStackTrace();
+		} catch (LeereVokabelException e) {
+			System.out.println("Die Eingabe Vokenthaelt keine Vokabel");
+		}
 	}
 
 	/**
-	 * Liest die einzelnen Vokabeln aus der Liste aus und speichert sie Zeile fuer Zeile in der Vokabel Datei (dateiName).
+	 * Liest die einzelnen Vokabeln aus der Liste aus und speichert sie Zeile fuer
+	 * Zeile in der Vokabel Datei (dateiName).
+	 * 
 	 * @param dateiName
 	 * @throws IOException
 	 */
-	private void vokabelDateiSpeichern(String dateiName) throws IOException {
-		File datei = new File(dateiName);
-		BufferedWriter writer = new BufferedWriter(new FileWriter(datei));
+	protected void vokabelDateiSpeichern(String dateiName) throws IOException {
+		if (listenVerwaltung.getAnfang() != null) {
 
-		DoppeltverketteListe liste = listenVerwaltung.getAnfang();
-		if (liste != null) {
-			writer.append(liste.getVokabelEnglisch() + ";" + liste.getVokabelDeutsch());
+			File datei = new File(dateiName);
+			BufferedWriter writer = new BufferedWriter(new FileWriter(datei));
+
+			DoppeltverketteteListe liste = listenVerwaltung.getAnfang();
+			if (liste != null) {
+				writer.append(liste.getVokabelEnglisch() + ";" + liste.getVokabelDeutsch());
+			}
+			while (liste.hasNext()) {
+				writer.append("\n");
+				liste = liste.getNext();
+				writer.append(liste.getVokabelEnglisch() + ";" + liste.getVokabelDeutsch());
+			}
+			writer.close();
 		}
-		while (liste.hasNext()) {
-			writer.append("\n");
-			liste = liste.getNext();
-			writer.append(liste.getVokabelEnglisch() + ";" + liste.getVokabelDeutsch());
-		}
-		writer.close();
 	}
 
 	/**
 	 * Gibt alle Vokabeln aus der Liste auf der Konsole aus
 	 */
-	private void vokabelnAusgeben() {
-		DoppeltverketteListe momEle = listenVerwaltung.getAnfang();
-		while (momEle != null) {
-			System.out.println(momEle.getVokabelEnglisch() + ";" + momEle.getVokabelDeutsch());
-			momEle = momEle.getNext();
-		}
+	protected void vokabelnAusgeben() {
+		System.out.println(erstelleStringAlleVokabeln());
 	}
 
 	/**
-	 * Liest alle Vokabel aus der Vokabel Datei (dateiName) aus und fuellt mit den einzelnen Vokabeln die Liste.
+	 * Erstellt ein String aus allen Vokabeln der Vokabelliste
+	 * 
+	 * @return String der Vokabelliste
+	 */
+	protected String erstelleStringAlleVokabeln() {
+		DoppeltverketteteListe momEle = listenVerwaltung.getAnfang();
+		StringBuilder builder = new StringBuilder();
+		while (momEle != null) {
+			builder.append(momEle.getVokabelEnglisch() + ";" + momEle.getVokabelDeutsch());
+			momEle = momEle.getNext();
+			if (momEle != null) {
+				builder.append("\n");
+			}
+		}
+		return builder.toString();
+	}
+
+	/**
+	 * Liest alle Vokabel aus der Vokabel Datei (dateiName) aus und fuellt mit den
+	 * einzelnen Vokabeln die Liste.
+	 * 
 	 * @param dateiName
 	 * @throws IOException
 	 */
-	private void vokabelDateiEinlesen(String dateiName) throws IOException {
+	protected void vokabelDateiEinlesen(String dateiName) throws IOException {
 		File datei = new File(dateiName);
 		if (!datei.exists()) {
 			datei.createNewFile();
@@ -245,7 +283,7 @@ public class Vokabeltrainer {
 	 * @throws KeinSemicolonException
 	 * @throws LeereVokabelException
 	 */
-	private boolean validiereZeile(String zeile) throws KeinSemicolonException, LeereVokabelException {
+	protected boolean validiereZeile(String zeile) throws KeinSemicolonException, LeereVokabelException {
 		if (zeile.contains(";")) {
 			String[] woerter = zeile.split(";");
 			if (!((woerter[0].isBlank() || woerter[0].isEmpty()) || (woerter[1].isBlank() || woerter[1].isEmpty()))) {

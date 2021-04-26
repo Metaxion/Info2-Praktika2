@@ -1,4 +1,4 @@
-package vokabeltrainer;
+import vokabeltrainer.Vokabeltrainer;
 
 public class Main {
 

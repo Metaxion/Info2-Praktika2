@@ -1,0 +1,8 @@
+red;rot
+blue;blau
+yellow;gelb
+green;gruen
+garden;garten
+house;haus
+living room;wohnzimmer
+bathroom;badezimmer

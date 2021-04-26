@@ -1,12 +1,12 @@
 package vokabeltrainer;
 
-public class DoppeltverketteListe {
+public class DoppeltverketteteListe {
 
 	private String vokabelEnglisch;
 	private String vokabelDeutsch;
-	private DoppeltverketteListe prev, next;
+	private DoppeltverketteteListe prev, next;
 	
-	public DoppeltverketteListe(String vokabelEnglisch, String vokabelDeutsch) {
+	public DoppeltverketteteListe(String vokabelEnglisch, String vokabelDeutsch) {
         this.vokabelEnglisch = vokabelEnglisch;
         this.vokabelDeutsch = vokabelDeutsch;
         next = null;
@@ -36,19 +36,19 @@ public class DoppeltverketteListe {
 		this.vokabelEnglisch = vokabelEnglisch;
 	}
 
-	public DoppeltverketteListe getPrev() {
+	public DoppeltverketteteListe getPrev() {
 		return prev;
 	}
 
-	public void setPrev(DoppeltverketteListe prev) {
+	public void setPrev(DoppeltverketteteListe prev) {
 		this.prev = prev;
 	}
 
-	public DoppeltverketteListe getNext() {
+	public DoppeltverketteteListe getNext() {
 		return next;
 	}
 
-	public void setNext(DoppeltverketteListe next) {
+	public void setNext(DoppeltverketteteListe next) {
 		this.next = next;
 	}
 
